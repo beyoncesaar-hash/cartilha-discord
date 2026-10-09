@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartilha — Discord Função</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0a1f;--p1:#050f1e;--p2:#071626;--bd:rgba(167,139,250,0.1);
+  --cy:#a78bfa;--cy2:#8b5cf6;--pk:#f472b6;--pk2:#db2777;
+  --tx:#d8d2f0;--mt:#8a82b8;--y:#ffd166;
+  --g1:rgba(167,139,250,0.14);--g2:rgba(244,114,182,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cy),var(--pk));border-radius:2px}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:'Quicksand',sans-serif;min-height:100vh;overflow-x:hidden;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(40,20,80,0.12) 3px,rgba(40,20,80,0.12) 4px);
+}
+.pw{position:relative;min-height:100vh}
+#bgc{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.ticker{position:relative;z-index:10;background:rgba(167,139,250,0.04);border-bottom:1px solid rgba(167,139,250,0.1);padding:5px 0;overflow:hidden}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;width:60px;height:100%;z-index:2}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
+.ticker-inner{display:flex;animation:tick 35s linear infinite;white-space:nowrap;width:max-content}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ti{font-family:'Quicksand',sans-serif;font-size:9px;color:var(--cy);letter-spacing:2px;padding:0 28px;opacity:.6}
+.ti b{color:var(--pk);font-weight:400}
+.ti-sep{color:rgba(167,139,250,0.3);padding:0 4px}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 16px 60px}
+header{text-align:center;padding:42px 20px 24px;position:relative}
+.sys-bar{display:inline-flex;align-items:center;gap:10px;background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.18);border-radius:3px;padding:5px 14px;margin-bottom:18px;font-family:'Quicksand',sans-serif;font-size:9px;letter-spacing:2px}
+.sys-bar .dot{width:5px;height:5px;border-radius:50%;background:var(--cy);animation:blink 1.1s ease-in-out infinite}
+.sys-bar span{color:var(--cy)}.sys-bar em{color:var(--mt);font-style:normal}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.tag-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tag{display:inline-block;padding:3px 13px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;font-family:'Quicksand',sans-serif}
+.tag-blue{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);color:var(--cy)}
+.tag-pink{background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.3);color:var(--pk)}
+.gh{position:relative;display:inline-block}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:700;letter-spacing:5px;color:#fff;line-height:1;position:relative}
+h1::before,h1::after{content:attr(data-text);position:absolute;top:0;left:0;right:0;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit}
+h1::before{color:var(--cy);animation:g1 6s infinite}
+h1::after{color:var(--pk);animation:g2 6s infinite .07s}
+@keyframes g1{0%,87%,100%{transform:none;opacity:0;clip-path:none}88%{transform:translate(-3px,1px);opacity:.9;clip-path:polygon(0 15%,100% 15%,100% 40%,0 40%)}90%{transform:translate(3px,-1px);opacity:.6;clip-path:polygon(0 15%,100% 15%,100% 40%,0 40%)}92%{transform:none;opacity:0;clip-path:none}}
+@keyframes g2{0%,89%,100%{transform:none;opacity:0;clip-path:none}90%{transform:translate(3px,0);opacity:.7;clip-path:polygon(0 55%,100% 55%,100% 75%,0 75%)}92%{transform:translate(-2px,0);opacity:.4;clip-path:polygon(0 55%,100% 55%,100% 75%,0 75%)}94%{transform:none;opacity:0;clip-path:none}}
+.sub{color:var(--mt);font-family:'Quicksand',sans-serif;font-size:.78rem;margin-top:14px;letter-spacing:2px;min-height:1.3em}
+.cur{display:inline-block;width:1px;height:.85em;background:var(--cy);animation:cur-b .75s infinite;vertical-align:text-bottom;margin-left:2px}
+@keyframes cur-b{0%,50%{opacity:1}51%,100%{opacity:0}}
+.hdiv{width:260px;height:1px;margin:20px auto 0;background:linear-gradient(90deg,transparent,var(--cy),var(--pk),transparent);position:relative}
+.hdiv::after{content:'◆';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--cy);font-size:9px;background:var(--bg);padding:0 8px;animation:blink 3s ease-in-out infinite}
+.stats{display:flex;justify-content:center;gap:0;margin-top:22px;flex-wrap:wrap}
+.st{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 22px;position:relative}
+.st+.st::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:rgba(167,139,250,0.12)}
+.st-n{font-family:'Quicksand',sans-serif;font-size:1.5rem;color:var(--cy);line-height:1}
+.st-l{font-size:8px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mt);margin-top:2px}
+.nav{display:flex;flex-wrap:wrap;gap:3px;background:rgba(14,10,31,0.92);border:1px solid rgba(167,139,250,0.1);border-radius:9px;padding:7px;margin:24px 0 18px;position:sticky;top:8px;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(167,139,250,0.03),0 12px 40px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.03)}
+.nav-pill{position:absolute;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.38);border-radius:6px;box-shadow:0 0 18px rgba(167,139,250,0.08);transition:all .32s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.nav-btn{background:transparent;border:1px solid transparent;border-radius:6px;padding:7px 12px;font-family:'Quicksand',sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.7px;color:var(--mt);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:4px;white-space:nowrap;position:relative;z-index:1}
+.nav-btn:hover{color:var(--tx)}
+.nav-btn.active{color:var(--cy)}
+.nav-end{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:'Quicksand',sans-serif;font-size:8px;color:var(--cy);letter-spacing:1.5px;padding:0 6px;opacity:.55}
+.page{display:none}
+.page.active{display:block;animation:pg .38s cubic-bezier(.4,0,.2,1)}
+@keyframes pg{from{opacity:0;transform:translateY(12px) scale(.995)}to{opacity:1;transform:none}}
+.scan-fx{position:absolute;left:0;right:0;height:1.5px;z-index:50;pointer-events:none;background:linear-gradient(90deg,transparent,var(--cy),var(--pk),transparent);animation:scan-dn .5s ease-out forwards}
+@keyframes scan-dn{from{top:0;opacity:.8}to{top:100%;opacity:0}}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c9{grid-column:span 9}.c12{grid-column:span 12}
+@media(max-width:820px){.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}}
+.card{background:linear-gradient(145deg,rgba(24,16,52,.94),rgba(14,10,31,.97));border:1px solid rgba(167,139,250,0.09);border-radius:10px;padding:18px;position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s,border-color .25s;--mx:.5;--my:.5}
+.card:hover{transform:translateY(-3px) scale(1.004);border-color:rgba(167,139,250,0.22);box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 0 1px rgba(167,139,250,0.06),0 0 25px rgba(167,139,250,0.04),inset 0 1px 0 rgba(255,255,255,0.04)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:var(--stripe,linear-gradient(90deg,var(--cy),var(--pk)));border-radius:10px 10px 0 0}
+.card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at calc(var(--mx)*100%) calc(var(--my)*100%),rgba(167,139,250,0.055) 0%,transparent 55%);pointer-events:none;opacity:0;transition:opacity .35s;border-radius:inherit}
+.card:hover::after{opacity:1}
+.hc{position:absolute;width:10px;height:10px;pointer-events:none}
+.hc-tl{top:5px;left:5px;border-top:1px solid rgba(167,139,250,0.4);border-left:1px solid rgba(167,139,250,0.4)}
+.hc-tr{top:5px;right:5px;border-top:1px solid rgba(167,139,250,0.18);border-right:1px solid rgba(167,139,250,0.18)}
+.hc-bl{bottom:5px;left:5px;border-bottom:1px solid rgba(244,114,182,0.2);border-left:1px solid rgba(244,114,182,0.2)}
+.hc-br{bottom:5px;right:5px;border-bottom:1px solid rgba(244,114,182,0.4);border-right:1px solid rgba(244,114,182,0.4)}
+.ct{font-family:'Cormorant Garamond',serif;font-size:1.04rem;font-weight:700;letter-spacing:.8px;color:#f5f3ff;margin-bottom:11px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.em{font-size:1.3rem}
+.bd{font-size:8px;font-family:'Quicksand',sans-serif;letter-spacing:1.8px;text-transform:uppercase;padding:2px 8px;border-radius:2px}
+.bd-red{background:rgba(244,114,182,0.1);color:var(--pk);border:1px solid rgba(244,114,182,0.28)}
+.bd-grn{background:rgba(167,139,250,0.1);color:var(--cy);border:1px solid rgba(167,139,250,0.28)}
+.bd-yel{background:rgba(255,209,102,0.1);color:var(--y);border:1px solid rgba(255,209,102,0.28)}
+.bd-pur{background:rgba(255,111,207,0.1);color:#ff6fcf;border:1px solid rgba(255,111,207,0.28)}
+.bd-blu{background:rgba(196,181,253,0.1);color:#c4b5fd;border:1px solid rgba(196,181,253,0.28)}
+.lst{list-style:none}
+.lst li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:.82rem;color:var(--tx);border-bottom:1px solid rgba(167,139,250,0.05);line-height:1.45}
+.lst li:last-child{border-bottom:none}
+.lst li::before{content:'›';color:var(--lc,var(--cy));font-size:1.1rem;font-weight:700;flex-shrink:0;margin-top:-1px}
+.hl{border-radius:5px;padding:9px 13px;font-size:.79rem;margin-top:9px;display:flex;gap:8px;align-items:flex-start;line-height:1.4;border-left:2px solid}
+.hl-red{background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.18);border-left:2px solid var(--pk);color:#ffb3d9}
+.hl-grn{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.15);border-left:2px solid var(--cy);color:#ddd6fe}
+.hl-yel{background:rgba(255,209,102,0.05);border:1px solid rgba(255,209,102,0.18);border-left:2px solid var(--y);color:#ffe5a0}
+.hl-pur{background:rgba(255,111,207,0.06);border:1px solid rgba(255,111,207,0.18);border-left:2px solid #ff6fcf;color:#ffcdf0}
+.hl-blu{background:rgba(196,181,253,0.06);border:1px solid rgba(196,181,253,0.18);border-left:2px solid #c4b5fd;color:#ede9fe}
+.steps{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.step{display:flex;gap:12px;align-items:flex-start;background:rgba(167,139,250,0.025);border:1px solid rgba(167,139,250,0.07);border-left:2px solid rgba(167,139,250,0.3);border-radius:0 7px 7px 0;padding:10px 13px;font-size:.82rem;line-height:1.45}
+.step-num{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--cy);color:var(--cy);font-weight:700;font-size:.72rem;font-family:'Quicksand',sans-serif;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:.78rem}
+.tbl thead tr{border-bottom:1px solid rgba(167,139,250,0.14)}
+.tbl th{padding:8px 10px;text-align:left;color:var(--cy);font-size:.66rem;letter-spacing:2px;text-transform:uppercase;font-family:'Quicksand',sans-serif;font-weight:400}
+.tbl td{padding:9px 10px;border-bottom:1px solid rgba(167,139,250,0.04);vertical-align:top;line-height:1.4}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{transition:background .15s}
+.tbl tbody tr:hover td{background:rgba(167,139,250,0.03)}
+.sev-high{color:var(--pk);font-weight:700}.sev-mid{color:var(--y);font-weight:700}.sev-low{color:var(--cy);font-weight:700}
+.horario{display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.22);border-radius:3px;padding:7px 16px;font-size:.88rem;font-family:'Quicksand',sans-serif;letter-spacing:2px;color:var(--cy);margin-top:8px}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.pulse{animation:pulse 2.5s ease-in-out infinite}
+.rule-item{display:flex;gap:10px;border-left:2px solid var(--rc,var(--cy));padding:8px 12px;margin-bottom:7px;background:rgba(167,139,250,0.02);border-radius:0 6px 6px 0;font-size:.82rem;line-height:1.45;transition:background .18s}
+.rule-item:hover{background:rgba(167,139,250,0.05)}
+.rule-n{font-family:'Quicksand',sans-serif;font-size:.88rem;color:var(--rc,var(--cy));flex-shrink:0;min-width:20px}
+.status{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--mt);margin-top:6px;font-family:'Quicksand',sans-serif;letter-spacing:1px}
+.sdot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.sdot-grn{background:var(--cy);box-shadow:0 0 6px var(--cy)}
+.sdot-red{background:var(--pk);box-shadow:0 0 6px var(--pk)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.snav-btn{background:rgba(167,139,250,0.04);border:1px solid rgba(167,139,250,0.1);border-radius:6px;padding:7px 15px;font-family:'Quicksand',sans-serif;font-size:.76rem;font-weight:600;letter-spacing:.8px;color:var(--mt);cursor:pointer;transition:all .2s}
+.snav-btn:hover{color:var(--cy);background:rgba(167,139,250,0.08)}
+.snav-btn.active{background:rgba(167,139,250,0.11);border-color:rgba(167,139,250,0.36);color:var(--cy)}
+.sub-page{display:none}
+.sub-page.active{display:block;animation:pg .32s ease}
+.mbox{background:rgba(167,139,250,0.03);border:1px solid rgba(167,139,250,0.07);border-radius:6px;padding:13px 14px;font-size:.81rem;line-height:1.65;color:var(--tx);margin-bottom:10px}
+.mbox .rule{display:flex;gap:7px;align-items:flex-start;padding:2px 0;font-size:.79rem}
+.mbox .rule::before{content:'›';color:var(--rc,var(--pk));font-weight:700;font-size:1rem;flex-shrink:0}
+.copy-btn2{width:100%;border-radius:5px;padding:9px;font-family:'Quicksand',sans-serif;font-size:.7rem;letter-spacing:1.5px;cursor:pointer;transition:all .2s;border:1px solid;position:relative;overflow:hidden}
+.copy-btn2 .rip{position:absolute;border-radius:50%;background:rgba(255,255,255,0.18);transform:translate(-50%,-50%) scale(0);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:translate(-50%,-50%) scale(4);opacity:0}}
+.reg-box{background:rgba(167,139,250,0.02);border:1px solid rgba(167,139,250,0.07);border-radius:6px;padding:13px 14px;font-size:.78rem;line-height:1.9;color:var(--tx);font-family:'Quicksand',sans-serif;white-space:pre-wrap;margin-bottom:10px;letter-spacing:.5px}
+.reg-field{color:var(--y)}
+.req-item{display:flex;gap:9px;align-items:flex-start;border-left:2px solid var(--pk);padding:7px 11px;margin-bottom:7px;background:rgba(244,114,182,0.04);border-radius:0 6px 6px 0;font-size:.8rem;line-height:1.45;transition:background .18s}
+.req-item:hover{background:rgba(244,114,182,0.08)}
+footer{text-align:center;margin-top:50px;color:var(--mt);font-size:.64rem;letter-spacing:3px;text-transform:uppercase;padding-top:18px;border-top:1px solid rgba(167,139,250,0.07);font-family:'Quicksand',sans-serif}
+footer span{color:rgba(167,139,250,0.3);margin:0 6px}
+
+/* ===== TEMA DELICADO ===== */
+:root{--bg:#1c1427;--cy:#c9b6f2;--cy2:#b39ce6;--pk:#f4a6c8;--pk2:#e58ab3;--y:#f7d9a8;--tx:#e6dcf2;--mt:#9d90b8}
+body{background-image:radial-gradient(circle at 15% 0%,rgba(244,166,200,.13),transparent 42%),radial-gradient(circle at 90% 8%,rgba(201,182,242,.13),transparent 40%),radial-gradient(circle at 50% 100%,rgba(244,166,200,.07),transparent 45%);background-attachment:fixed}
+#bgc,.hc,.scan-fx{display:none!important}
+h1{font-weight:600;letter-spacing:4px;font-style:italic;color:#fff4fa;text-shadow:0 0 30px rgba(244,166,200,.35)}
+h1::before,h1::after{display:none}
+.ticker{background:rgba(244,166,200,.05);border-bottom:1px solid rgba(244,166,200,.12)}
+.ti{letter-spacing:2.5px;font-size:10px;opacity:.55}
+.sys-bar,.tag{border-radius:20px}
+.sys-bar{letter-spacing:1.5px;font-size:10px}
+.tag{letter-spacing:1.8px;font-size:10px}
+.sub{letter-spacing:1.5px;font-size:.85rem}
+.st-n{font-family:'Quicksand',sans-serif;font-size:1.7rem;font-weight:600;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1;color:#ffd3e6;letter-spacing:1px}
+#htime{font-size:1.7rem!important}
+.nav{border-radius:20px;background:rgba(28,20,39,.88);border-color:rgba(244,166,200,.14)}
+.nav-pill{border-radius:14px;background:rgba(244,166,200,.12);border-color:rgba(244,166,200,.35);box-shadow:0 0 20px rgba(244,166,200,.1)}
+.nav-btn{border-radius:14px;font-weight:600}
+.nav-btn.active{color:#ffd3e6}
+.card{border-radius:20px;padding:22px;background:linear-gradient(150deg,rgba(46,32,64,.82),rgba(30,21,44,.92));border-color:rgba(244,166,200,.12);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.card:hover{transform:translateY(-2px);border-color:rgba(244,166,200,.28);box-shadow:0 14px 40px rgba(0,0,0,.35),0 0 30px rgba(244,166,200,.06)}
+.card::before{height:2px;opacity:.55;border-radius:20px 20px 0 0}
+.card::after{background:radial-gradient(circle at calc(var(--mx)*100%) calc(var(--my)*100%),rgba(244,166,200,.07),transparent 55%)}
+.ct{font-size:1.28rem;font-weight:700;letter-spacing:.3px;color:#fff0f7}
+.bd{border-radius:12px;letter-spacing:1.2px;font-size:9px;font-family:'Quicksand',sans-serif;font-weight:700}
+.hl{border-radius:12px}
+.step,.rule-item,.req-item{border-radius:0 14px 14px 0}
+.mbox,.reg-box{border-radius:14px}
+.copy-btn2{border-radius:14px;font-weight:700;letter-spacing:1px}
+.snav-btn{border-radius:14px}
+.horario{border-radius:14px;font-weight:600}
+.tbl th{font-weight:700;letter-spacing:1.2px}
+.lst li{font-size:.86rem}
+.hdiv::after{content:'❀';font-size:12px;color:var(--pk)}
+footer{letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="pw">
+<canvas id="bgc"></canvas>
+
+<div class="ticker"><div class="ticker-inner" id="tk"></div></div>
+
+<div class="wrap">
+<header>
+  <div class="sys-bar">
+    <div class="dot"></div><span>SISTEMA ONLINE</span><em>|</em><span>META CITY</span><em>|</em><span>DISCORD FUNÇÃO v2.0</span>
+  </div>
+  <div class="tag-row">
+    <span class="tag tag-blue">Manual Interno</span>
+    <span class="tag tag-pink">Equipe Discord</span>
+  </div>
+  <div class="gh"><h1 data-text="DISCORD FUNÇÃO">DISCORD FUNÇÃO</h1></div>
+  <p class="sub" id="sub-txt"></p>
+  <div class="hdiv"></div>
+  <div class="stats">
+    <div class="st"><div class="st-n" data-val="9">0</div><div class="st-l">Seções</div></div>
+    <div class="st"><div class="st-n" data-val="7">0</div><div class="st-l">Regras</div></div>
+    <div class="st"><div class="st-n" id="htime" style="font-size:.95rem">--:--</div><div class="st-l">Horário Bot</div></div>
+    <div class="st"><div class="st-n" data-val="12" id="cmd-count">0</div><div class="st-l">Modelos</div></div>
+  </div>
+</header>
+
+<nav class="nav" id="nav">
+  <span class="nav-pill" id="npill"></span>
+  <button class="nav-btn active" onclick="goTo('tickets',this)">🎫 Tickets</button>
+  <button class="nav-btn" onclick="goTo('dev',this)">⚙️ Modo Dev</button>
+  <button class="nav-btn" onclick="goTo('al',this)">📋 Whitelist</button>
+  <button class="nav-btn" onclick="goTo('punicao',this)">⚖️ Punições</button>
+  <button class="nav-btn" onclick="goTo('troca',this)">🔄 Troca DC</button>
+  <button class="nav-btn" onclick="goTo('tags',this)">🏷️ Tags</button>
+  <button class="nav-btn" onclick="goTo('monitor',this)">🔍 Monitor</button>
+  <button class="nav-btn" onclick="goTo('regras',this)">📜 Regras</button>
+  <button class="nav-btn" onclick="goTo('msgs',this)">💬 Msgs</button>
+  <span class="nav-end"><span class="sdot sdot-grn" style="width:5px;height:5px"></span>ONLINE</span>
+</nav>
+
+<!-- TICKETS -->
+<section class="page active" id="page-tickets">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">🎫</span> Manual de Atendimento de Tickets <span class="bd bd-pur">EQUIPE DISCORD</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">Membros com <strong style="color:#f5f3ff">função designada</strong> são responsáveis por atender tickets garantindo respostas <strong style="color:var(--cy)">rápidas, organizadas e profissionais</strong>.</p>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--cy),var(--cy2))">
+    <div class="ct"><span class="em">👤</span> 1. Responsabilidade</div>
+    <ul class="lst" style="--lc:var(--cy)">
+      <li>Todo ticket deve ser respondido <strong>assim que possível</strong></li>
+      <li>Quem inicia deve <strong>acompanhar até a resolução completa</strong></li>
+      <li>Outro membro só intervém se solicitado ou por supervisão superior</li>
+      <li>É <strong>proibido ignorar tickets</strong> ou deixar respostas incompletas</li>
+    </ul>
+    <div class="hl hl-pur"><span>📌</span><span>Ticket com padrão de setor/cargo → <strong>alterar nome do canal</strong> para maior prioridade!</span></div>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">⚡</span> 2. Prioridade & Organização</div>
+    <ul class="lst" style="--lc:var(--pk)">
+      <li>Atendimento <strong>rápido e eficiente</strong> — sem demora</li>
+      <li>Tratar em <strong>ordem de chegada</strong>, salvo urgências identificadas por superiores</li>
+      <li>Manter <strong>profissionalismo e cordialidade</strong> em todas as respostas</li>
+    </ul>
+    <div class="hl hl-grn"><span>✅</span><span>Urgências identificadas por superiores podem furar a fila.</span></div>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#c4b5fd,var(--cy))">
+    <div class="ct"><span class="em">💬</span> 3. Comunicação & Etiqueta</div>
+    <ul class="lst" style="--lc:#c4b5fd">
+      <li>Evitar linguagem ofensiva ou desrespeitosa</li>
+      <li>Confirmar <strong>compreensão do problema</strong> antes de propor soluções</li>
+      <li>Explicar claramente as etapas ao usuário</li>
+      <li>Evitar respostas vagas — fornecer informações concretas</li>
+    </ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),#db2777)">
+    <div class="ct"><span class="em">🔒</span> 4. Encerramento</div>
+    <ul class="lst" style="--lc:var(--pk)">
+      <li>Encerrar <strong>apenas quando o problema estiver totalmente resolvido</strong></li>
+      <li>Registrar ações relevantes no <strong>log de atendimento</strong></li>
+      <li>Dificuldade para resolver? <strong>Informar ADM responsável</strong> antes de fechar</li>
+    </ul>
+    <div class="hl hl-red"><span>⚠️</span><span>Nunca encerre um ticket com problema em aberto!</span></div>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">🛡️</span> 5 & 6. Intervenção & Conduta</div>
+    <ul class="lst" style="--lc:#ff6fcf">
+      <li>Superiores podem intervir <strong>a qualquer momento</strong></li>
+      <li>Pedir ajuda se o problema for complexo, houver conflito ou ticket bloqueado</li>
+      <li>Não se envolver em <strong>discussões pessoais</strong></li>
+      <li>Evitar multitarefas durante o atendimento</li>
+      <li>Respeitar <strong>informações confidenciais</strong> dos usuários</li>
+      <li>Tickets problemáticos recorrentes → <strong>notificar superiores</strong></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- MODO DEV -->
+<section class="page" id="page-dev">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),#c4b5fd)">
+    <div class="ct"><span class="em">⚙️</span> Como Ativar o Modo Desenvolvedor no Discord <span class="bd bd-blu">OBRIGATÓRIO</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">O Modo Desenvolvedor permite acessar informações técnicas como <strong style="color:#f5f3ff">IDs de usuários, servidores e mensagens</strong> — fundamental para o trabalho da equipe.</p>
+    <div class="status"><div class="sdot sdot-grn"></div>Deve estar SEMPRE ativado</div>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--cy),var(--cy2))">
+    <div class="ct"><span class="em">🖥️</span> Passo a Passo — Ativação</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div>Abra o Discord no PC e clique no <strong>ícone de engrenagem ⚙️</strong> no canto inferior esquerdo (próximo ao seu nome de usuário).</div></div>
+      <div class="step"><div class="step-num">2</div><div>Vá até a aba <strong>Avançado</strong> (ou "Configurações Avançadas") e ative a opção <strong>Modo Desenvolvedor</strong>.</div></div>
+      <div class="step"><div class="step-num">3</div><div>Teste clicando com o botão direito em qualquer usuário, mensagem ou servidor e selecionando <strong>"Copiar ID"</strong>.</div></div>
+    </div>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--pk),var(--cy))">
+    <div class="ct"><span class="em">🆔</span> Como Copiar IDs</div>
+    <div class="pills" style="flex-direction:column;gap:8px;margin-top:4px">
+      <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.16);border-radius:6px;padding:10px 13px">
+        <div style="font-size:.74rem;color:var(--cy);margin-bottom:5px;font-family:'Quicksand',sans-serif;letter-spacing:1.5px">▸ USUÁRIOS</div>
+        <div style="font-size:.81rem">Clique com o botão direito no nome do usuário → <strong>Copiar ID</strong></div>
+      </div>
+      <div style="background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.16);border-radius:6px;padding:10px 13px">
+        <div style="font-size:.74rem;color:var(--pk);margin-bottom:5px;font-family:'Quicksand',sans-serif;letter-spacing:1.5px">▸ MENSAGENS</div>
+        <div style="font-size:.81rem">Clique com o botão direito na mensagem → <strong>Copiar ID</strong></div>
+      </div>
+      <div style="background:rgba(196,181,253,0.06);border:1px solid rgba(196,181,253,0.16);border-radius:6px;padding:10px 13px">
+        <div style="font-size:.74rem;color:#c4b5fd;margin-bottom:5px;font-family:'Quicksand',sans-serif;letter-spacing:1.5px">▸ SERVIDORES</div>
+        <div style="font-size:.81rem">Clique com o botão direito no nome do servidor → <strong>Copiar ID</strong></div>
+      </div>
+    </div>
+    <div class="hl hl-yel" style="margin-top:10px"><span>⚡</span><span>Modo Desenvolvedor é <strong>fundamental</strong> para o registro de punições, trocas e todos os protocolos!</span></div>
+  </div>
+</div>
+</section>
+
+<!-- ALLOWLIST -->
+<section class="page" id="page-al">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">📋</span> Manual de Leitura de Whitelists <span class="bd bd-yel">LEITORES WL</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">Os <strong style="color:#f5f3ff">Leitores de Whitelist</strong> revisam submissões garantindo que apenas histórias válidas sejam aprovadas, mantendo a qualidade do servidor.</p>
+  </div>
+  <div class="card c5" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">❌</span> 1. Critérios de Reprovação</div>
+    <div class="steps">
+      <div class="step"><div class="step-num" style="border-color:var(--pk);color:var(--pk)">1</div><div><strong>História Curta</strong> — menos de 4 linhas → <span style="color:var(--pk);font-weight:700">REPROVAR</span></div></div>
+      <div class="step"><div class="step-num" style="border-color:var(--pk);color:var(--pk)">2</div><div><strong>Plágio</strong> — história copiada de outra fonte → <span style="color:var(--pk);font-weight:700">REPROVAR</span></div></div>
+      <div class="step"><div class="step-num" style="border-color:var(--pk);color:var(--pk)">3</div><div><strong>Fantasiosa</strong> — história muito fantasiosa → <span style="color:var(--pk);font-weight:700">REPROVAR</span></div></div>
+    </div>
+    <div class="hl hl-grn" style="margin-top:10px"><span>✅</span><span>Apenas histórias <strong>originais, coerentes e com conteúdo humano</strong> devem ser aprovadas.</span></div>
+  </div>
+  <div class="card c7" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">📅</span> 2 & 3. Leitura & Responsabilidades</div>
+    <div class="horario pulse">🕙 10:00 — 22:00 <span style="color:var(--mt);font-size:.75rem;margin-left:6px">horário das leituras</span></div>
+    <ul class="lst" style="--lc:var(--cy);margin-top:12px">
+      <li>Leituras realizadas das <strong>10:00 às 22:00</strong></li>
+      <li>Após concluir, enviar aviso no chat <strong>#visitante</strong> confirmando que todas as pendentes foram lidas</li>
+      <li>Ajudar na leitura sempre que solicitado</li>
+      <li>Seguir os critérios de forma <strong>imparcial e objetiva</strong> — sem favoritismo</li>
+    </ul>
+    <div class="hl hl-yel"><span>📢</span><span>Sempre confirmar no <strong>#visitante</strong> quando finalizar todas as whitelists pendentes!</span></div>
+  </div>
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">🤖</span> Codiguinhos — Horário de Funcionamento <span class="bd bd-grn">ATIVO</span></div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div class="horario pulse">🕙 10:00 — 03:00</div>
+      <p style="font-size:.84rem;color:var(--mt);flex:1;min-width:200px">Os codiguinhos ficam abertos das <strong style="color:#f5f3ff">10:00 às 03:00</strong>. Fora desse horário o sistema estará <strong style="color:var(--pk)">indisponível</strong>.</p>
+    </div>
+    <div class="hl hl-grn" style="margin-top:10px"><span>💡</span><span>Caso precise validar um código durante a leitura, certifique-se de estar dentro do horário <strong>10:00 às 03:00</strong>.</span></div>
+  </div>
+</div>
+</section>
+
+<!-- PUNIÇÃO -->
+<section class="page" id="page-punicao">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--pk),var(--y),var(--cy))">
+    <div class="ct"><span class="em">⚖️</span> Guia de Infrações e Punições — Equipe Discord <span class="bd bd-red">IMPORTANTE</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">O respeito é fundamental para a boa convivência. As infrações abaixo possuem punições específicas para manter a harmonia no servidor.</p>
+  </div>
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">📊</span> Tabela de Infrações e Punições</div>
+    <table class="tbl">
+      <thead><tr><th>Infração</th><th>Gravidade</th><th>Punição</th><th>Motivo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Spawn de Links</strong></td><td><span class="sev-high">● Alta</span></td><td style="color:var(--pk);font-weight:600">Aplicar castigo de 7 dias</td><td style="color:var(--mt)">Compartilhar links sem permissão. Links suspeitos são proibidos.</td></tr>
+        <tr><td><strong>Divulgação de Golpes ou Fraudes</strong></td><td><span class="sev-high">● Alta</span></td><td style="color:var(--pk);font-weight:600">Banimento imediato</td><td style="color:var(--mt)">Propagar golpes, fraudes ou enganos é proibido.</td></tr>
+        <tr><td><strong>Farpas no Chat — Leve</strong></td><td><span class="sev-low">● Baixa</span></td><td style="color:var(--cy);font-weight:600">1 hora de castigo</td><td style="color:var(--mt)">Insultos pequenos ou provocações. Mantém ambiente pacífico.</td></tr>
+        <tr><td><strong>Farpas no Chat — Moderada</strong></td><td><span class="sev-mid">● Média</span></td><td style="color:var(--y);font-weight:600">1 dia castigo ou 2–3 dias ban</td><td style="color:var(--mt)">Ofensas repetidas. Evita escalonamento de conflitos.</td></tr>
+        <tr><td><strong>Farpas no Chat — Grave</strong></td><td><span class="sev-high">● Alta</span></td><td style="color:var(--pk);font-weight:600">1 a 7 dias de castigo</td><td style="color:var(--mt)">Ataques pessoais ou incitação ao ódio. Garante segurança.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- TROCA DISCORD -->
+<section class="page" id="page-troca">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">🔄</span> Troca de Discord — Procedimentos e Regras <span class="bd bd-red">REGRAS RÍGIDAS</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">Trocas devem seguir regras rígidas para garantir <strong style="color:#f5f3ff">segurança e controle das contas</strong>. Qualquer descumprimento pode gerar punições.</p>
+  </div>
+  <div class="card c5" style="--stripe:linear-gradient(90deg,var(--cy),#c4b5fd)">
+    <div class="ct"><span class="em">📝</span> 1. Registro Obrigatório</div>
+    <div class="hl hl-red"><span>🚫</span><span>É <strong>proibido realizar qualquer troca sem registro</strong> no canal de Registro de Trocas!</span></div>
+    <ul class="lst" style="--lc:#ff6fcf;margin-top:10px">
+      <li><strong>Usuário:</strong> Nome do usuário</li>
+      <li><strong>ID Discord Antigo:</strong> ID anterior</li>
+      <li><strong>ID Discord Novo:</strong> ID novo</li>
+      <li><strong>Motivo da Troca:</strong> Motivo detalhado</li>
+      <li><strong>ID Cidade:</strong> Passaporte dentro da cidade</li>
+    </ul>
+  </div>
+  <div class="card c3" style="--stripe:linear-gradient(90deg,var(--pk),var(--y))">
+    <div class="ct"><span class="em">✅</span> 2. Casos Permitidos</div>
+    <div class="hl hl-grn"><span>🔑</span><span>Apenas em casos <strong>comprovados de conta hackeada ou perdida</strong>.</span></div>
+    <div class="hl hl-red" style="margin-top:8px"><span>❌</span><span>Trocas por <strong>conveniência ou desinteresse</strong> não são permitidas.</span></div>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">📋</span> 3. Procedimentos Obrigatórios</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div>Tirar <strong>prints claros</strong> da conta antiga e nova antes de qualquer ação</div></div>
+      <div class="step"><div class="step-num">2</div><div>Enviar prints <strong>junto com todas as informações</strong> no canal de registro</div></div>
+      <div class="step"><div class="step-num">3</div><div><strong>Remover todas as tags</strong> da conta antiga — não pode deixar nenhuma</div></div>
+      <div class="step"><div class="step-num">4</div><div><strong>Transferir todas as tags</strong> da conta antiga para a nova, sem exceção</div></div>
+    </div>
+    <div class="hl hl-red" style="margin-top:8px"><span>⚠️</span><span>Tentativa de burlar o registro = <strong>infração grave</strong>.</span></div>
+  </div>
+</div>
+</section>
+
+<!-- TAGS -->
+<section class="page" id="page-tags">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--cy))">
+    <div class="ct"><span class="em">🏷️</span> Regras de Tags — Equipe Discord <span class="bd bd-pur">GERENCIAMENTO</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">O gerenciamento de tags mantém a <strong style="color:#f5f3ff">organização, o histórico e os privilégios dos membros</strong>. Descumprimento resulta em punições.</p>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">🚫</span> 1 & 2. Uso Correto & Liberação</div>
+    <div class="hl hl-red"><span>🚫</span><span>Proibido <strong>atribuir ou remover tags por conta própria</strong> sem autorização.</span></div>
+    <div class="hl hl-grn" style="margin-top:8px"><span>✅</span><span>Permitido apenas: <strong>Cidadão, Visitante & Liberar ID</strong></span></div>
+    <div class="hl hl-red" style="margin-top:8px"><span>⛔</span><span>Liberação sem whitelist não autorizada = <strong>infração grave</strong>.</span></div>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">📌</span> 3 & 4. Atribuição & Troca</div>
+    <ul class="lst" style="--lc:#ff6fcf">
+      <li>Antes de atribuir, <strong>verificar se condiz com as diretrizes</strong> e status do membro</li>
+      <li>Tags incorretas são <strong>responsabilidade de quem atribuiu</strong></li>
+      <li>Em trocas de Discord: <strong>transferir TODAS as tags</strong> sem exceção</li>
+      <li>Garante que <strong>histórico, status e privilégios</strong> sejam mantidos</li>
+    </ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">⚖️</span> 5. Responsabilidade</div>
+    <ul class="lst" style="--lc:var(--y)">
+      <li>Seguir as regras <strong>rigorosamente</strong></li>
+      <li>Qualquer descumprimento = <strong>infração grave</strong></li>
+      <li>Atribuição indevida ou remoção não autorizada é passível de punição por superiores</li>
+    </ul>
+    <div class="hl hl-yel" style="margin-top:10px"><span>⚡</span><span>Todos que gerenciam tags têm total responsabilidade pelas ações realizadas.</span></div>
+  </div>
+</div>
+</section>
+
+<!-- MONITORAMENTO -->
+<section class="page" id="page-monitor">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">🔍</span> Monitoramento Discord — Meta City <span class="bd bd-grn">DISCORD FUNÇÃO</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">Membros do <strong style="color:#f5f3ff">Discord Função</strong> possuem responsabilidades específicas para manter o servidor organizado, seguro e funcionando corretamente.</p>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--cy),var(--cy2))">
+    <div class="ct"><span class="em">💬</span> 1. Monitores de Chat</div>
+    <ul class="lst" style="--lc:var(--cy)"><li>Manter chats <strong>organizados e harmoniosos</strong></li><li>Intervir em discussões e aplicar regras quando necessário</li><li>Emitir avisos e punições, registrando no <strong>Registro-DC</strong></li><li>Agir com <strong>imparcialidade e profissionalismo</strong></li></ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--y),#f9a825)">
+    <div class="ct"><span class="em">📋</span> 2. Leitores de Whitelist</div>
+    <ul class="lst" style="--lc:var(--y)"><li>Revisar todas as whitelists dos Visitantes</li><li>Reprovar histórias curtas, plagiadas ou fantasiosas</li><li>Informar no <strong>#visitante</strong> quando todas forem lidas</li><li>Ajudar sempre que solicitado</li></ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#c4b5fd,var(--cy))">
+    <div class="ct"><span class="em">🎫</span> 3. Atendimento de Tickets</div>
+    <ul class="lst" style="--lc:#c4b5fd"><li>Responder <strong>todos os tickets</strong> de moradores e visitantes</li><li>Responsável acompanha <strong>até a resolução</strong></li><li>Outro membro só intervém se solicitado ou por superior</li><li>Registrar e escalar complexos para superiores</li></ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">🏷️</span> 4. Gerenciamento de Tags</div>
+    <ul class="lst" style="--lc:#ff6fcf"><li>Atribuir e remover tags seguindo as <strong>regras do servidor</strong></li><li>Transferir corretamente em <strong>trocas de Discord</strong></li><li>Garantir histórico, status e privilégios dos moradores</li><li>Qualquer erro = <strong>infração grave</strong></li></ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">🔐</span> 5. Monitores de Segurança</div>
+    <ul class="lst" style="--lc:var(--pk)"><li>Monitorar chats, links e canais — evitar <strong>spam e fraudes</strong></li><li>Identificar contas hackeadas → <strong>ação imediata</strong></li><li>Aplicar punições conforme gravidade</li><li>Registrar tudo no <strong>registro de monitoramento</strong></li></ul>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--cy),#c4b5fd)">
+    <div class="ct"><span class="em">🌟</span> 6. Responsabilidade Geral</div>
+    <ul class="lst" style="--lc:#c4b5fd"><li>Agir com <strong>atenção, imparcialidade e profissionalismo</strong></li><li>Negligência ou descumprimento → <strong>punições ou perda de cargo</strong></li></ul>
+    <div class="hl hl-red" style="margin-top:10px"><span>⚠️</span><span>O descumprimento das funções tem consequências diretas no cargo do setor.</span></div>
+  </div>
+</div>
+</section>
+
+<!-- REGRAS -->
+<section class="page" id="page-regras">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--pk),var(--cy),#ff6fcf)">
+    <div class="ct"><span class="em">📜</span> Regras Discord Função — Meta City <span class="bd bd-red">TODOS OS MEMBROS</span></div>
+    <p style="font-size:.84rem;color:var(--mt)">Todos os membros com função designada devem seguir estas regras para garantir <strong style="color:#f5f3ff">organização, segurança e eficiência</strong> no servidor.</p>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--cy),#ff6fcf)">
+    <div class="ct"><span class="em">⚡</span> Regras 1 a 4</div>
+    <div class="rule-item" style="--rc:var(--cy)"><div class="rule-n">1</div><div><strong>Compromisso:</strong> Cumprir todas as tarefas — whitelists e tickets. Agir de forma responsável e consistente.</div></div>
+    <div class="rule-item" style="--rc:#c4b5fd"><div class="rule-n">2</div><div><strong>Imparcialidade:</strong> Avaliações justas e imparciais. Seguir rigorosamente os critérios da administração.</div></div>
+    <div class="rule-item" style="--rc:#ff6fcf"><div class="rule-n">3</div><div><strong>Sigilo:</strong> Manter em sigilo informações sobre whitelists, punições e decisões. Não compartilhar respostas incorretas com visitantes/moradores.</div></div>
+    <div class="rule-item" style="--rc:var(--y)"><div class="rule-n">4</div><div><strong>Atendimento a Pedidos:</strong> Priorizar tarefas solicitadas. Manter fluxo de trabalho organizado e ágil.</div></div>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">📋</span> Regras 5 a 7</div>
+    <div class="rule-item" style="--rc:var(--pk)"><div class="rule-n">5</div><div><strong>Verificação de Chats:</strong> Monitorar regularmente os chats. Evitar spam, links suspeitos ou qualquer atividade indevida.</div></div>
+    <div class="rule-item" style="--rc:#c4b5fd"><div class="rule-n">6</div><div><strong>Relato de Problemas:</strong> Reportar imediatamente qualquer problema encontrado. Garantir que superiores tomem medidas rápidas e eficientes.</div></div>
+    <div class="rule-item" style="--rc:#ff6fcf"><div class="rule-n">7</div><div><strong>Uso Correto das Tags:</strong> Seguir diretrizes para atribuição e remoção. Garantir que tags sejam registradas conforme as regras.</div></div>
+    <div class="hl hl-red" style="margin-top:12px"><span>⚠️</span><span>O descumprimento de qualquer regra pode gerar advertência, castigo ou perda de cargo.</span></div>
+  </div>
+</div>
+</section>
+
+<!-- MSGS -->
+<section class="page" id="page-msgs">
+<div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px">
+  <button class="snav-btn active" onclick="showSub('canais',this)">💬 Modelos de Canais</button>
+  <button class="snav-btn" onclick="showSub('registros',this)">📝 Modelos de Registro</button>
+</div>
+
+<div class="sub-page active" id="sub-canais">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">💬</span> Modelos Discord — Canais <span class="bd bd-pur">COPIAR & COLAR</span></div>
+    <p style="font-size:.83rem;color:var(--mt)">Mensagens oficiais para cada canal. Clique em <strong style="color:#f5f3ff">📋 COPIAR</strong> para copiar o texto completo.</p>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">📸</span> MetaGram</div>
+    <div class="mbox" style="--rc:var(--pk)"><div style="font-weight:700;margin-bottom:7px">Este espaço é dedicado à publicação de fotos e registros do cotidiano da cidade. Mantenha o respeito acima de tudo.</div><div class="rule">Proibido ofensas, provocações ou comentários tóxicos</div><div class="rule">Respeite todos os personagens e histórias</div><div class="rule">Fotos fora do contexto ou desrespeitosas serão removidas</div><div class="rule">Poste, aprecie e interaja com maturidade. MetaCity agradece.</div></div>
+    <button class="copy-btn2" data-target="t-metagram" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-metagram" style="position:fixed;left:-9999px;height:1px;opacity:0">Este espaço é dedicado à publicação de fotos e registros do cotidiano da cidade. Mantenha o respeito acima de tudo.
+
+› Proibido ofensas, provocações ou comentários tóxicos
+› Respeite todos os personagens e histórias
+› Fotos fora do contexto ou desrespeitosas serão removidas
+› Poste, aprecie e interaja com maturidade. MetaCity agradece.</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">🎬</span> Aba Clips</div>
+    <div class="mbox" style="--rc:var(--y)"><div style="font-weight:700;margin-bottom:7px">Este canal é exclusivo para publicação de clips. Farpas, provocações e indiretas <strong>NÃO</strong> são permitidas.</div><div class="rule" style="--rc:var(--y)">Ataques, ironias ou desrespeito serão removidos</div><div class="rule" style="--rc:var(--y)">Comentários tóxicos geram punição</div><div class="rule" style="--rc:var(--y)">Não confunda conteúdo com provocação</div><div class="rule" style="--rc:var(--y)">Poste seu clip. O resto fica fora daqui.</div></div>
+    <button class="copy-btn2" data-target="t-clips" style="background:rgba(255,209,102,0.1);border-color:rgba(255,209,102,0.3);color:#ffe5a0">📋 COPIAR</button>
+    <textarea id="t-clips" style="position:fixed;left:-9999px;height:1px;opacity:0">Este canal é exclusivo para publicação de clips. Farpas, provocações e indiretas NÃO são permitidas.
+
+› Ataques, ironias ou desrespeito serão removidos
+› Comentários tóxicos geram punição
+› Não confunda conteúdo com provocação
+› Poste seu clip. O resto fica fora daqui.</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">📷</span> Fotógrafos</div>
+    <div class="mbox" style="--rc:#ff6fcf"><div style="font-weight:700;margin-bottom:7px">Espaço exclusivo para fotógrafos divulgarem seus trabalhos e serviços.</div><div class="rule" style="--rc:#ff6fcf">Poste suas fotos, portfólios e contatos</div><div class="rule" style="--rc:#ff6fcf">Respeite o trabalho dos outros</div><div class="rule" style="--rc:#ff6fcf">Proibido desmerecer ou copiar conteúdos</div><div class="rule" style="--rc:#ff6fcf">Valorize a arte. Apoie quem cria.</div></div>
+    <button class="copy-btn2" data-target="t-foto" style="background:rgba(255,111,207,0.1);border-color:rgba(255,111,207,0.3);color:#ffcdf0">📋 COPIAR</button>
+    <textarea id="t-foto" style="position:fixed;left:-9999px;height:1px;opacity:0">Espaço exclusivo para fotógrafos divulgarem seus trabalhos e serviços.
+
+› Poste suas fotos, portfólios e contatos
+› Respeite o trabalho dos outros
+› Proibido desmerecer ou copiar conteúdos
+› Valorize a arte. Apoie quem cria.</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">💌</span> Ficha de Paquera</div>
+    <div class="hl hl-red" style="margin-bottom:9px"><span>📌</span><span>Sem vídeos, só FOTO. Nada de flood!</span></div>
+    <div class="mbox" style="background:rgba(244,114,182,0.04);border-color:rgba(244,114,182,0.14)"><div style="color:#ffb3d9;font-weight:700;margin-bottom:6px;font-family:'Quicksand',sans-serif;font-size:.78rem;letter-spacing:1px">▸ MODELO DA FICHA:</div><div><span style="color:var(--y)">Número (FiveM):</span></div><div><span style="color:var(--y)">Idade:</span></div><div><span style="color:var(--y)">Bio:</span></div><div><span style="color:var(--y)">Procura:</span></div><div><span style="color:var(--y)">Personalidade em 3 palavras:</span></div></div>
+    <button class="copy-btn2" data-target="t-paquera" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-paquera" style="position:fixed;left:-9999px;height:1px;opacity:0">Sem vídeos, só FOTO. Nada de flood, respeite os outros perfis!
+
+Número (FiveM):
+Idade:
+Bio:
+Procura:
+Personalidade em 3 palavras:</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">💕</span> Love Room</div>
+    <div class="mbox" style="--rc:#ff6fcf"><div style="font-weight:700;margin-bottom:7px">Espaço destinado a ships, interações românticas e momentos fofos. Tudo aqui deve ser feito com respeito e consentimento.</div><div class="rule" style="--rc:#ff6fcf">Nada de exposição sem autorização</div><div class="rule" style="--rc:#ff6fcf">Brincadeiras só se ambas as partes estiverem de acordo</div><div class="rule" style="--rc:#ff6fcf">Desrespeito ou constrangimento não serão tolerados</div><div class="rule" style="--rc:#ff6fcf">Shippou? Seja com carinho. 💕</div></div>
+    <button class="copy-btn2" data-target="t-love" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-love" style="position:fixed;left:-9999px;height:1px;opacity:0">Espaço destinado a ships, interações românticas e momentos fofos. Tudo aqui deve ser feito com respeito e consentimento.
+
+› Nada de exposição sem autorização
+› Brincadeiras só se ambas as partes estiverem de acordo
+› Desrespeito ou constrangimento não serão tolerados
+› Shippou? Seja com carinho. 💕</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">⚠️</span> Avisos Crash</div>
+    <div class="mbox" style="--rc:var(--y)"><div style="font-weight:700;margin-bottom:7px">Canal destinado a avisos de crash, bugs ou quedas, com imagem obrigatória.</div><div class="rule" style="--rc:var(--y)">Poste apenas avisos reais</div><div class="rule" style="--rc:var(--y)">Sempre acompanhe de imagem/comprovação</div><div class="rule" style="--rc:var(--y)">Comentários desnecessários serão removidos</div><div class="rule" style="--rc:var(--y)">Ajude a staff mantendo o canal organizado.</div></div>
+    <button class="copy-btn2" data-target="t-crash" style="background:rgba(255,209,102,0.1);border-color:rgba(255,209,102,0.3);color:#ffe5a0">📋 COPIAR</button>
+    <textarea id="t-crash" style="position:fixed;left:-9999px;height:1px;opacity:0">Canal destinado a avisos de crash, bugs ou quedas, com imagem obrigatória.
+
+› Poste apenas avisos reais
+› Sempre acompanhe de imagem/comprovação
+› Comentários desnecessários serão removidos
+› Ajude a staff mantendo o canal organizado.</textarea>
+  </div>
+  <div class="card c6" style="--stripe:linear-gradient(90deg,var(--cy),#c4b5fd)">
+    <div class="ct"><span class="em">🐛</span> Reporte de Bug — Avisos Crash</div>
+    <div class="mbox" style="background:rgba(167,139,250,0.04);border-color:rgba(167,139,250,0.14)"><div style="font-weight:700;margin-bottom:8px;color:#ddd6fe">Atenção, queridos moradores! 🏙️</div><div style="margin-bottom:8px">Encontrou algum bug, falha ou algo fora do normal na cidade? Solicitamos que realizem o reporte para que nossa equipe possa corrigir o problema.</div><div style="color:var(--y);font-weight:700;margin-bottom:4px;font-family:'Quicksand',sans-serif;font-size:.76rem;letter-spacing:1px">▸ MODELO:</div><div><span style="color:var(--y)">Bug:</span> descreva detalhadamente o ocorrido</div><div><span style="color:var(--y)">Localização/CDs:</span> informe o local exato ou coordenadas [XYZ]</div><div><span style="color:var(--y)">Evidências:</span> anexe imagens ou vídeos se possível</div></div>
+    <button class="copy-btn2" data-target="t-bug" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.3);color:#ddd6fe">📋 COPIAR</button>
+    <textarea id="t-bug" style="position:fixed;left:-9999px;height:1px;opacity:0">Atenção, queridos moradores!
+
+Encontrou algum bug, falha ou algo fora do normal na cidade? Solicitamos que realizem o reporte para que nossa equipe possa corrigir o problema e manter a qualidade da experiência de todos.
+
+Modelo para reporte:
+Bug: descreva detalhadamente o ocorrido (ex.: veículo atravessando o chão, porta que não abre, textura invisível etc.)
+Localização ou coordenadas (CDs): informe o local exato (ex.: próximo à praça, coordenadas [XYZ])
+Evidências: anexe imagens ou vídeos para facilitar a análise e solução
+
+Sua colaboração é essencial para que possamos manter a cidade estável, organizada e pronta para o desenvolvimento do RP.</textarea>
+  </div>
+  <div class="card c3" style="--stripe:linear-gradient(90deg,#c4b5fd,var(--cy))">
+    <div class="ct"><span class="em">🎵</span> TikTok</div>
+    <div class="mbox" style="--rc:#c4b5fd"><div style="font-weight:700;margin-bottom:7px">Canal destinado à divulgação de vídeos do TikTok relacionados à cidade.</div><div class="rule" style="--rc:#c4b5fd">Apenas conteúdos autorais ou relacionados ao RP</div><div class="rule" style="--rc:#c4b5fd">Respeito obrigatório nos comentários</div><div class="rule" style="--rc:#c4b5fd">Nada de spam ou links fora do contexto</div><div class="rule" style="--rc:#c4b5fd">Mostre seu conteúdo e fortaleça a cena.</div></div>
+    <button class="copy-btn2" data-target="t-tiktok" style="background:rgba(196,181,253,0.1);border-color:rgba(196,181,253,0.3);color:#ede9fe">📋 COPIAR</button>
+    <textarea id="t-tiktok" style="position:fixed;left:-9999px;height:1px;opacity:0">Canal destinado à divulgação de vídeos do TikTok relacionados à cidade.
+
+› Apenas conteúdos autorais ou relacionados ao RP
+› Respeito obrigatório nos comentários
+› Nada de spam ou links fora do contexto
+› Mostre seu conteúdo e fortaleça a cena.</textarea>
+  </div>
+  <div class="card c5" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk))">
+    <div class="ct"><span class="em">🕊️</span> +Amor e Respeito</div>
+    <div class="mbox" style="--rc:var(--cy)"><div style="font-weight:700;margin-bottom:7px">Este espaço é destinado a conversas saudáveis e respeitosas. Farpas, provocações e indiretas <strong>NÃO</strong> serão tolerados.</div><div class="rule">Ataques, ironias ou desrespeito serão removidos</div><div class="rule">Comentários tóxicos geram punição</div><div class="rule">Algo pessoal? Resolva no PV do morador envolvido.</div><div style="margin-top:7px;font-size:.77rem;color:var(--mt);font-style:italic">A gentileza gera gentileza; o respeito mútuo é a base para relações harmoniosas.</div></div>
+    <button class="copy-btn2" data-target="t-amor" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.3);color:#ddd6fe">📋 COPIAR</button>
+    <textarea id="t-amor" style="position:fixed;left:-9999px;height:1px;opacity:0">Este espaço é destinado a conversas saudáveis e respeitosas entre os moradores. Farpas, provocações e indiretas NÃO serão tolerados.
+
+› Ataques, ironias ou desrespeito serão removidos
+› Comentários tóxicos geram punição
+› Se quiser resolver algo pessoal, fale no PV do morador envolvido.
+
+Vamos manter o respeito e o bom convívio de todos. A gentileza gera gentileza; o respeito mútuo é a base para relações harmoniosas.</textarea>
+  </div>
+  <div class="card c7" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">🌆</span> Whitelist — Mensagem Padrão</div>
+    <div class="mbox" style="background:rgba(255,111,207,0.04);border-color:rgba(255,111,207,0.14)"><div style="font-weight:700;margin-bottom:6px;color:#ffcdf0">Olá, futuros Metacitenses, Tudo bem? 🌆</div><div style="margin-bottom:7px">Informamos que todas as whitelists foram devidamente lidas e analisadas com o máximo de atenção. As leituras são realizadas diariamente, no horário das <strong>10h às 22h</strong>, conforme rigoroso expediente oficial.</div><div style="margin-bottom:7px">Por conta do grande volume de whitelists, as leituras são lidas por <strong>ordem de envio</strong> — ninguém fura a fila! Por isso, pedimos um pouquinho de paciência enquanto todas passam pelo processo certinho.</div><div style="color:#ffcdf0">💜 Equipe Meta City Agradece!</div></div>
+    <button class="copy-btn2" data-target="t-alwl" style="background:rgba(255,111,207,0.1);border-color:rgba(255,111,207,0.3);color:#ffcdf0">📋 COPIAR</button>
+    <textarea id="t-alwl" style="position:fixed;left:-9999px;height:1px;opacity:0">Olá, futuros Metacitenses, Tudo bem? 🌆
+
+Informamos que todas as whitelists foram devidamente lidas e analisadas com o máximo de atenção (e uma boa dose de dedicação). As leituras são realizadas diariamente, no horário das 10h às 22h, conforme rigoroso expediente oficial.
+
+Por conta do grande volume de whitelists, as leituras são lidas por ordem de envio — ninguém fura a fila, hein! Por isso, pedimos um pouquinho de paciência enquanto todas passam pelo processo certinho.
+
+💜 Equipe Meta City Agradece!</textarea>
+  </div>
+  <div class="card c5" style="--stripe:linear-gradient(90deg,var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">🌟</span> Atenção Fotógrafos!</div>
+    <div class="mbox" style="background:rgba(244,114,182,0.04);border-color:rgba(244,114,182,0.14)"><div style="font-weight:700;margin-bottom:8px;color:#ffb3d9">ATENÇÃO FOTÓGRAFOS! 📸</div><div style="margin-bottom:8px">Chegou a hora de brilhar! Nada de deixar seus trabalhos guardados na gaveta — postem tudo nesta aba!</div><div style="margin-bottom:8px">Vale flyer, edição, arte conceitual ou aquele clique que deu orgulho. Soltem a criatividade e mostrem esse talento pro mundo!</div><div style="color:#ffb3d9;font-weight:600">@ · Fotógrafo 📷</div></div>
+    <button class="copy-btn2" data-target="t-atfoto" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-atfoto" style="position:fixed;left:-9999px;height:1px;opacity:0">ATENÇÃO FOTÓGRAFOS! 📸
+
+Chegou a hora de brilhar! Nada de deixar seus trabalhos guardados na gaveta — postem tudo nesta aba!
+
+Vale flyer, edição, arte conceitual ou aquele clique que deu orgulho. Separem um tempinho para produzirem a forma de divulgar, soltem a criatividade e mostrem esse talento pro mundo!
+
+@ · Fotógrafo 📷</textarea>
+  </div>
+</div>
+</div>
+
+<div class="sub-page" id="sub-registros">
+<div class="grid">
+  <div class="card c12" style="--stripe:linear-gradient(90deg,var(--cy),var(--pk),#ff6fcf)">
+    <div class="ct"><span class="em">📝</span> Modelos de Registro <span class="bd bd-yel">COPIAR & COLAR</span></div>
+    <p style="font-size:.83rem;color:var(--mt)">Modelos padronizados para registros no Discord. <strong style="color:#f5f3ff">Sempre inclua as evidências obrigatórias</strong> conforme cada tipo.</p>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--cy),var(--cy2))">
+    <div class="ct"><span class="em">🔓</span> Liberado Manualmente</div>
+    <div class="reg-box"><span class="reg-field">Liberado manualmente: (ID)</span>
+
+<span class="reg-field">DC:</span>
+<span class="reg-field">ID:</span>
+<span class="reg-field">ID TICKET:</span>
+<span class="reg-field">Motivo:</span></div>
+    <button class="copy-btn2" data-target="t-libman" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.3);color:#ddd6fe">📋 COPIAR</button>
+    <textarea id="t-libman" style="position:fixed;left:-9999px;height:1px;opacity:0">Liberado manualmente: (ID)
+
+DC:
+ID:
+ID TICKET:
+Motivo:</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#c4b5fd,var(--cy))">
+    <div class="ct"><span class="em">🏙️</span> Cargo Cidadão Adicionado</div>
+    <div class="reg-box"><span class="reg-field">Cargo Cidadão Adicionado: (ID)</span>
+
+<span class="reg-field">ID:</span>
+<span class="reg-field">ID Discord:</span>
+<span class="reg-field">ID Ticket:</span>
+<span class="reg-field">Motivo:</span></div>
+    <button class="copy-btn2" data-target="t-cidadao" style="background:rgba(196,181,253,0.1);border-color:rgba(196,181,253,0.3);color:#ede9fe">📋 COPIAR</button>
+    <textarea id="t-cidadao" style="position:fixed;left:-9999px;height:1px;opacity:0">Cargo Cidadão Adicionado: (ID)
+
+ID:
+ID Discord:
+ID Ticket:
+Motivo:</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),var(--cy))">
+    <div class="ct"><span class="em">🔄</span> Troca de Discord</div>
+    <div class="reg-box"><span class="reg-field">TROCA DE DISCORD: (ID)</span>
+
+<span class="reg-field">DISCORD ANTIGO:</span>
+<span class="reg-field">DISCORD NOVO:</span>
+<span class="reg-field">TICKET:</span>
+<span class="reg-field">MOTIVO:</span></div>
+    <button class="copy-btn2" data-target="t-troca" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-troca" style="position:fixed;left:-9999px;height:1px;opacity:0">TROCA DE DISCORD: (ID)
+
+DISCORD ANTIGO:
+DISCORD NOVO:
+TICKET:
+MOTIVO:</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--y),var(--pk))">
+    <div class="ct"><span class="em">🆔</span> Cargo Liberar ID</div>
+    <div class="reg-box"><span class="reg-field">Cargo Liberar ID Adicionado: (ID)</span>
+
+<span class="reg-field">ID:</span>
+<span class="reg-field">ID Discord:</span>
+<span class="reg-field">ID Ticket:</span>
+<span class="reg-field">Motivo:</span> Liberou id errado no bot</div>
+    <button class="copy-btn2" data-target="t-libid" style="background:rgba(255,209,102,0.1);border-color:rgba(255,209,102,0.3);color:#ffe5a0">📋 COPIAR</button>
+    <textarea id="t-libid" style="position:fixed;left:-9999px;height:1px;opacity:0">Cargo Liberar ID Adicionado: (ID)
+
+ID:
+ID Discord:
+ID Ticket:
+Motivo: Liberou id errado no bot</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,var(--pk),var(--pk2))">
+    <div class="ct"><span class="em">⏳</span> Castigo</div>
+    <div class="reg-box"><span class="reg-field">Castigo: (1 Hora / 1 Dia / 1 Semana)</span>
+
+<span class="reg-field">ID:</span>
+<span class="reg-field">ID Discord:</span>
+<span class="reg-field">Motivo:</span></div>
+    <button class="copy-btn2" data-target="t-castigo" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:#ffb3d9">📋 COPIAR</button>
+    <textarea id="t-castigo" style="position:fixed;left:-9999px;height:1px;opacity:0">Castigo: (1 Hora / 1 Dia / 1 Semana)
+
+ID:
+ID Discord:
+Motivo:</textarea>
+  </div>
+  <div class="card c4" style="--stripe:linear-gradient(90deg,#ff6fcf,var(--pk))">
+    <div class="ct"><span class="em">📎</span> Evidências Obrigatórias</div>
+    <div class="req-item"><div style="font-size:1.1rem;flex-shrink:0">🔄</div><div><strong style="color:#ffcdf0">Troca de Discord:</strong> Print do inventário aberto na cidade + prints das duas contas (conta antiga e nova).</div></div>
+    <div class="req-item"><div style="font-size:1.1rem;flex-shrink:0">🏙️</div><div><strong style="color:#ffcdf0">Cargo Cidadão:</strong> Print do inventário na cidade + print do perfil Discord com cargo aplicado.</div></div>
+    <div class="req-item"><div style="font-size:1.1rem;flex-shrink:0">🆔</div><div><strong style="color:#ffcdf0">Liberação de ID:</strong> Print do erro no FiveM ao conectar + print do perfil Discord com cargo adicionado.</div></div>
+    <div class="req-item"><div style="font-size:1.1rem;flex-shrink:0">⏳</div><div><strong style="color:#ffcdf0">Castigo:</strong> Print que comprove o motivo da punição como evidência do ocorrido.</div></div>
+  </div>
+</div>
+</div>
+</section>
+
+<footer>Discord Função<span>◆</span>Guia Completo de Responsabilidades<span>◆</span>Uso Interno da Equipe</footer>
+</div>
+</div>
+
+<script>
+const tkItems=['SISTEMA ONLINE','META CITY','DISCORD FUNÇÃO v2.0','TICKETS ABERTOS','WHITELIST ATIVA','MODO DEV OBRIGATÓRIO','REGRAS EM VIGOR','10:00 — 22:00','MONITORAMENTO ATIVO'];
+const tk=document.getElementById('tk');
+const full=tkItems.map(t=>`<span class="ti">${t}</span><span class="ti ti-sep">◆</span>`).join('');
+tk.innerHTML=full+full;
+
+const cvs=document.getElementById('bgc');const ctx=cvs.getContext('2d');
+const pw=document.querySelector('.pw');
+function resizeCvs(){cvs.width=pw.offsetWidth;cvs.height=Math.max(pw.scrollHeight,pw.offsetHeight,document.body.scrollHeight)}
+resizeCvs();window.addEventListener('resize',resizeCvs);
+const CY='rgba(167,139,250,',PK='rgba(244,114,182,';
+const pts=[];
+for(let i=0;i<70;i++){pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.6+.4,c:Math.random()>.5?CY:PK})}
+function drawPts(){
+  resizeCvs();ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cvs.width)p.vx*=-1;if(p.y<0||p.y>cvs.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c+'.7)';ctx.fill()});
+  pts.forEach((a,i)=>{for(let j=i+1;j<pts.length;j++){const b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<130){const op=(.9-d/130)*.18;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=a.c+op+')';ctx.lineWidth=.6;ctx.stroke()}}});
+  requestAnimationFrame(drawPts);
+}
+drawPts();
+
+const sub=document.getElementById('sub-txt');
+const txt='Guia Completo de Regras, Funções e Procedimentos';
+let ti=0;
+function tw(){
+  if(ti<=txt.length){sub.innerHTML=txt.slice(0,ti)+'<span class="cur"></span>';ti++;setTimeout(tw,ti===txt.length?2000:55)}
+  else{ti=0;sub.innerHTML='<span class="cur"></span>';setTimeout(tw,500)}
+}
+setTimeout(tw,800);
+
+document.querySelectorAll('.st-n[data-val]').forEach(el=>{
+  const target=+el.dataset.val;let cur=0;
+  const step=()=>{cur=Math.min(cur+1,target);el.textContent=cur;if(cur<target)setTimeout(step,80)};
+  setTimeout(step,600);
+});
+function updateClock(){
+  const n=new Date();
+  const h=String(n.getHours()).padStart(2,'0');const m=String(n.getMinutes()).padStart(2,'0');
+  const htEl=document.getElementById('htime');if(htEl)htEl.textContent=h+':'+m;
+}
+updateClock();setInterval(updateClock,30000);
+
+const nav=document.getElementById('nav');const pill=document.getElementById('npill');
+function movePill(btn){pill.style.left=btn.offsetLeft+'px';pill.style.top=btn.offsetTop+'px';pill.style.width=btn.offsetWidth+'px';pill.style.height=btn.offsetHeight+'px'}
+const firstBtn=nav.querySelector('.nav-btn.active');
+if(firstBtn)setTimeout(()=>movePill(firstBtn),100);
+
+document.querySelectorAll('.card').forEach(c=>{
+  c.insertAdjacentHTML('beforeend','<span class="hc hc-tl"></span><span class="hc hc-tr"></span><span class="hc hc-bl"></span><span class="hc hc-br"></span>');
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',((e.clientX-r.left)/r.width).toFixed(2));
+    c.style.setProperty('--my',((e.clientY-r.top)/r.height).toFixed(2));
+  });
+});
+
+document.querySelectorAll('.copy-btn2').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r=document.createElement('span');r.className='rip';
+    const rect=this.getBoundingClientRect();
+    const size=Math.max(rect.width,rect.height)*2;
+    r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left}px;top:${e.clientY-rect.top}px`;
+    this.appendChild(r);setTimeout(()=>r.remove(),600);
+    const ta=document.getElementById(this.dataset.target);
+    ta.style.cssText='position:fixed;left:0;opacity:1;height:auto';
+    ta.select();document.execCommand('copy');
+    ta.style.cssText='position:fixed;left:-9999px;height:1px;opacity:0';
+    const orig=this.textContent;this.textContent='✅ COPIADO!';
+    setTimeout(()=>{this.textContent=orig},2000);
+  });
+});
+
+function goTo(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');movePill(btn);
+  const scan=document.createElement('div');scan.className='scan-fx';
+  document.querySelector('.pw').appendChild(scan);
+  setTimeout(()=>scan.remove(),600);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showSub(id,btn){
+  document.querySelectorAll('.sub-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.snav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sub-'+id).classList.add('active');btn.classList.add('active');
+}
+</script>
+</body>
+</html>
